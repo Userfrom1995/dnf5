@@ -9,6 +9,9 @@ message("Building bindings for go")
 function(add_go_module LIBRARY_NAME MODULE_NAME)
     set(TARGET_NAME "go_${MODULE_NAME}")
     set_source_files_properties(../../${LIBRARY_NAME}/${MODULE_NAME}.i PROPERTIES CPLUSPLUS ON)
+    set(SWIG_OUTFILE_DIR "${CMAKE_CURRENT_BINARY_DIR}/swig")
+    file(MAKE_DIRECTORY "${SWIG_OUTFILE_DIR}")
+    set_source_files_properties(../../${LIBRARY_NAME}/${MODULE_NAME}.i PROPERTIES SWIG_OUTFILE_DIR "${SWIG_OUTFILE_DIR}")
     list(APPEND CMAKE_SWIG_FLAGS
         -module ${TARGET_NAME} -cgo -intgosize 64 -package libdnf5
     )
