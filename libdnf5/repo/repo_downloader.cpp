@@ -210,11 +210,6 @@ int RepoDownloader::mirror_failure_cb(
 };
 
 
-LibrepoError::LibrepoError(std::unique_ptr<GError> && lr_error)
-    : Error(M_("Librepo error: {}"), std::string(lr_error->message)),
-      code(lr_error->code) {}
-
-
 void RepoDownloader::add(
     libdnf5::repo::Repo & repo, const std::string & destdir, std::function<repo_loading_func> load_repo) try {
     auto & cbd = callback_data.emplace_back();

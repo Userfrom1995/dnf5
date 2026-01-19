@@ -26,6 +26,10 @@
 
 namespace libdnf5::repo {
 
+LibrepoError::LibrepoError(std::unique_ptr<GError> && lr_error)
+    : Error(M_("Librepo error: {}"), std::string(lr_error ? lr_error->message : "Unknown error")),
+      code(lr_error ? lr_error->code : 0) {}
+
 // Map string from config option proxy_auth_method to librepo LrAuth value
 static constexpr struct {
     const char * name;
