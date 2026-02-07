@@ -8,6 +8,9 @@ libdnf5::Base base;
 // Optionally load configuration from the config files.
 base.load_config();
 
+// Disable plugins to prevent loading plugins from the host system during tests
+base.get_config().get_plugins_option().set(false);
+
 // Override the detected system architecture, similar to how the
 // `--forcearch=aarch64` switch works in the dnf5 command line tool.
 base.get_vars()->set("arch", "aarch64");
