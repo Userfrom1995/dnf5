@@ -20,6 +20,8 @@
 #include "needs_restarting.hpp"
 
 #include <dirent.h>
+#include <dnf5/shared_options.hpp>
+#include <json-c/json.h>
 #include <libdnf5-cli/argument_parser.hpp>
 #include <libdnf5-cli/output/changelogs.hpp>
 #include <libdnf5/conf/const.hpp>
@@ -102,6 +104,8 @@ void NeedsRestartingCommand::set_argument_parser() {
         "functionality "
         "as \"dnf5 needs-restarting\".");
     cmd.register_named_arg(reboothint_arg);
+
+    dnf5::create_json_option(*this);
 }
 
 void NeedsRestartingCommand::configure() {
@@ -213,6 +217,19 @@ time_t NeedsRestartingCommand::get_boot_time(Context & ctx) {
     return boot_time;
 }
 
+struct ProcessResult {
+    std::string pid;
+    std::vector<std::string> cmdline;
+    std::string package_name;
+
+    bool operator<(const ProcessResult & other) const {
+        if (pid.length() != other.pid.length()) {
+            return pid.length() < other.pid.length();
+        }
+        return pid < other.pid;
+    }
+};
+
 libdnf5::rpm::PackageSet recursive_dependencies(
     const libdnf5::rpm::Package & package, libdnf5::rpm::PackageQuery & installed) {
     libdnf5::rpm::PackageSet dependencies{package.get_base()};
@@ -237,6 +254,62 @@ libdnf5::rpm::PackageSet recursive_dependencies(
     return dependencies;
 }
 
+// [NOTE] When editing JSON output, do not forget to update the docs at doc/dnf5_plugins/needs_restarting.8.rst
+
+// NOSLASHESCAPE is needed to avoid escaping slashes in the documentation URL
+static constexpr int JSON_FLAGS = JSON_C_TO_STRING_PRETTY | JSON_C_TO_STRING_NOSLASHESCAPE;
+
+static void print_reboot_json(bool reboot_required, const std::vector<std::string> & package_names) {
+    json_object * j_output_array = json_object_new_array();
+    json_object * j_output = json_object_new_object();
+    json_object_object_add(j_output, "type", json_object_new_string("reboot"));
+    json_object_object_add(j_output, "reboot_required", json_object_new_boolean(reboot_required));
+
+    json_object * j_packages = json_object_new_array();
+    for (const auto & pkg_name : package_names) {
+        json_object_array_add(j_packages, json_object_new_string(pkg_name.c_str()));
+    }
+    json_object_object_add(j_output, "packages", j_packages);
+    json_object_object_add(
+        j_output, "documentation", json_object_new_string("https://access.redhat.com/solutions/27943"));
+
+    json_object_array_add(j_output_array, j_output);
+    std::cout << json_object_to_json_string_ext(j_output_array, JSON_FLAGS) << std::endl;
+    json_object_put(j_output_array);
+}
+
+static void print_services_json(const std::vector<std::string> & service_names) {
+    json_object * j_output = json_object_new_array();
+    for (const auto & service_name : service_names) {
+        json_object * j_service = json_object_new_object();
+        json_object_object_add(j_service, "type", json_object_new_string("unit"));
+        json_object_object_add(j_service, "unit", json_object_new_string(service_name.c_str()));
+        json_object_array_add(j_output, j_service);
+    }
+    std::cout << json_object_to_json_string_ext(j_output, JSON_FLAGS) << std::endl;
+    json_object_put(j_output);
+}
+
+static void print_processes_json(const std::vector<ProcessResult> & processes) {
+    json_object * j_output = json_object_new_array();
+    for (const auto & process : processes) {
+        json_object * j_process = json_object_new_object();
+        json_object_object_add(j_process, "type", json_object_new_string("process"));
+        json_object_object_add(j_process, "pid", json_object_new_int(std::stoi(process.pid)));
+
+        json_object * j_cmdline = json_object_new_array();
+        for (const auto & arg : process.cmdline) {
+            json_object_array_add(j_cmdline, json_object_new_string(arg.c_str()));
+        }
+        json_object_object_add(j_process, "cmdline", j_cmdline);
+        json_object_object_add(j_process, "package", json_object_new_string(process.package_name.c_str()));
+
+        json_object_array_add(j_output, j_process);
+    }
+    std::cout << json_object_to_json_string_ext(j_output, JSON_FLAGS) << std::endl;
+    json_object_put(j_output);
+}
+
 void NeedsRestartingCommand::system_needs_restarting(Context & ctx) {
     const auto boot_time = get_boot_time(ctx);
 
@@ -251,25 +324,34 @@ void NeedsRestartingCommand::system_needs_restarting(Context & ctx) {
         }
     }
 
-    if (need_reboot.empty()) {
-        std::cout << "No core libraries or services have been updated since boot-up." << std::endl
-                  << "Reboot should not be necessary." << std::endl;
-    } else {
-        std::cout << "Core libraries or services have been updated since boot-up:" << std::endl;
-        std::vector<std::string> need_reboot_names;
+    const bool reboot_required = !need_reboot.empty();
+
+    std::vector<std::string> need_reboot_names;
+    if (reboot_required) {
         for (const auto & pkg : need_reboot) {
             need_reboot_names.emplace_back(pkg.get_name());
         }
         std::sort(need_reboot_names.begin(), need_reboot_names.end());
         need_reboot_names.erase(
             std::unique(need_reboot_names.begin(), need_reboot_names.end()), need_reboot_names.end());
+    }
 
+    if (ctx.get_json_output_requested()) {
+        print_reboot_json(reboot_required, need_reboot_names);
+    } else if (reboot_required) {
+        std::cout << "Core libraries or services have been updated since boot-up:" << std::endl;
         for (const auto & pkg_name : need_reboot_names) {
             std::cout << "  * " << pkg_name << std::endl;
         }
         std::cout << std::endl
                   << "Reboot is required to fully utilize these updates." << std::endl
                   << "More information: https://access.redhat.com/solutions/27943" << std::endl;
+    } else {
+        std::cout << "No core libraries or services have been updated since boot-up." << std::endl
+                  << "Reboot should not be necessary." << std::endl;
+    }
+
+    if (reboot_required) {
         throw libdnf5::cli::SilentCommandExitError(1);
     }
 }
@@ -374,11 +456,20 @@ void NeedsRestartingCommand::services_need_restarting(Context & ctx) {
         }
     }
 
-    if (!service_names.empty()) {
-        for (const auto & service_name : service_names) {
-            std::cout << service_name << std::endl;
+    std::sort(service_names.begin(), service_names.end());
+
+    if (ctx.get_json_output_requested()) {
+        print_services_json(service_names);
+        if (!service_names.empty()) {
+            throw libdnf5::cli::SilentCommandExitError(1);
         }
-        throw libdnf5::cli::SilentCommandExitError(1);
+    } else {
+        if (!service_names.empty()) {
+            for (const auto & service_name : service_names) {
+                std::cout << service_name << std::endl;
+            }
+            throw libdnf5::cli::SilentCommandExitError(1);
+        }
     }
 }
 
@@ -457,7 +548,7 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
     // Map of executable paths to their process start times and packages
     struct ProcessInfo {
         std::string pid;
-        std::string cmdline;
+        std::vector<std::string> cmdline;
         time_t start_time;
         libdnf5::rpm::Package package;
     };
@@ -524,15 +615,13 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
         // Read the full cmdline
         std::string cmdline_path = std::string("/proc/") + pid + "/cmdline";
         std::ifstream cmdline_file(cmdline_path);
-        std::string cmdline;
+        std::vector<std::string> cmdline_args;
 
         if (cmdline_file.is_open()) {
-            std::getline(cmdline_file, cmdline, '\0');
-
-            // null bytes used as field separators; replace with spaces
-            for (char & c : cmdline) {
-                if (c == '\0') {
-                    c = ' ';
+            std::string arg;
+            while (std::getline(cmdline_file, arg, '\0')) {
+                if (!arg.empty()) {
+                    cmdline_args.push_back(arg);
                 }
             }
         }
@@ -556,7 +645,7 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
             auto it = file_to_package.find(exe_path_str);
             if (it != file_to_package.end()) {
                 const auto & package = it->second;
-                running_processes.insert({exe_path_str, ProcessInfo{pid, cmdline, process_start_time, package}});
+                running_processes.insert({exe_path_str, ProcessInfo{pid, cmdline_args, process_start_time, package}});
             }
         }
     }
@@ -564,7 +653,7 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
     closedir(proc_dir);
 
     // Now check which processes need restarting
-    std::unordered_set<std::string> processes_needing_restart;
+    std::vector<ProcessResult> processes_needing_restart;
     libdnf5::rpm::PackageSet updated_packages{ctx.get_base()};
 
     for (const auto & [exe_path, process_info] : running_processes) {
@@ -576,7 +665,8 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
             // updated since the process started, the process needs restart
             const auto install_time = static_cast<time_t>(dep.get_install_time());
             if (install_time > process_info.start_time) {
-                processes_needing_restart.insert(std::string(process_info.pid) + '\t' + process_info.cmdline);
+                processes_needing_restart.push_back(
+                    {process_info.pid, process_info.cmdline, process_info.package.get_name()});
                 // Track this package as updated so we can check reverse dependencies
                 updated_packages.add(dep);
                 break;
@@ -584,13 +674,28 @@ void NeedsRestartingCommand::processes_need_restarting(Context & ctx, bool exclu
         }
     }
 
-    if (!processes_needing_restart.empty()) {
-        std::vector<std::string> sorted_processes(processes_needing_restart.begin(), processes_needing_restart.end());
-        std::sort(sorted_processes.begin(), sorted_processes.end());
-        for (const auto & process : sorted_processes) {
-            std::cout << process << std::endl;
+    std::sort(processes_needing_restart.begin(), processes_needing_restart.end());
+
+    if (ctx.get_json_output_requested()) {
+        print_processes_json(processes_needing_restart);
+        if (!processes_needing_restart.empty()) {
+            throw libdnf5::cli::SilentCommandExitError(1);
         }
-        throw libdnf5::cli::SilentCommandExitError(1);
+    } else {
+        if (!processes_needing_restart.empty()) {
+            for (const auto & process : processes_needing_restart) {
+                std::string cmdline_str;
+                for (size_t i = 0; i < process.cmdline.size(); ++i) {
+                    cmdline_str += process.cmdline[i];
+                    if (i < process.cmdline.size() - 1) {
+                        cmdline_str += " ";
+                    }
+                }
+
+                std::cout << process.pid << "\t" << cmdline_str << std::endl;
+            }
+            throw libdnf5::cli::SilentCommandExitError(1);
+        }
     }
 }
 
