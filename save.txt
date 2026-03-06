@@ -1,0 +1,39 @@
+#: ../include/libdnf5-cli/utils/userconfirm.hpp:52
+msgid "Is this ok [Y/n]: "
+msgstr "Je to v pořádku [A/n]: "
+
+#: ../include/libdnf5-cli/utils/userconfirm.hpp:54
+msgid "Is this ok [y/N]: "
+msgstr "Je to v pořádku [a/N]: "
+
+
+'git <command> [<revision>...] -- [<file>...]'
+[myuser@LAPTOP-409T8FMM dnf5]$ git log
+commit f32bd64860fcffd95ba6440e9f4a8e33fe09a158 (HEAD -> translated, translated_backup)
+Author: User1995 <userfrom1995@gmail.com>
+Date:   Wed Nov 19 21:30:09 2025 +0530
+
+    Make userconfirm prompt strings translatable
+
+    The confirmation prompt "Is this ok [Y/n]:" and response characters
+    were hardcoded strings in the userconfirm.hpp template function,
+    making them untranslatable.
+
+    Changes:
+    - Extract translatable strings to libdnf5-cli/utils/userconfirm.cpp
+    - Add helper functions: get_yes_no_prompt(), get_yes_response(), etc.
+    - Update libdnf5-cli.pot with new translatable strings
+
+    The userconfirm template now calls helper functions that return
+    translated strings from the libdnf5-cli translation domain, allowing
+    translators to localize the prompt and response characters.
+
+    Fixes: #1868
+
+    Assisted-by: Claude Sonnet 4 (Anthropic)
+
+
+     "cd /home/myuser/envon",
+        "spectool -g python3-envon.spec",
+        "rpmbuild -bs python3-envon.spec --define '_sourcedir .' --define '_srcrpmdir .'"
+      ],

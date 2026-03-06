@@ -1,0 +1,31 @@
+{
+  "transaction":{
+    "id":40,
+    "start_time":"2025-10-20 13:21:05",
+    "end_time":"2025-10-20 13:21:05",
+    "rpmdb_version_begin":"db92ff71fab2692ca0d1b8cfa155f30a599432c1df208799b08a6427a652d485",
+    "rpmdb_version_end":"4c5562e18d0860442d0ca2f53d5e27b9514357ef426d103f950d71778c9796ec",
+    "user_id":0,
+    "user_name":"0 Super User <root>",
+    "status":"Ok",
+    "releasever":"42",
+    "description":"dnf install glibc-locale-source glibc-langpack-en",
+    "comment":"",
+    "packages":[
+      {
+        "nevra":"glibc-locale-source-0:2.41-11.fc42.x86_64",
+        "action":"Install",
+        "reason":"User",
+        "repository":"updates"
+      },
+      {
+        "nevra":"glibc-langpack-en-0:2.41-11.fc42.x86_64",
+        "action":"Install",
+        "reason":"User",
+        "repository":"updates"
+      }
+    ],
+    "groups":[],
+    "environments":[]
+  }
+}

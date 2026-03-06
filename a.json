@@ -1,0 +1,53 @@
+
+[myuser@LAPTOP-409T8FMM dnf5
+]$ ./dnf5 history info --json
+{
+  "transaction": {
+    "id": 40,
+    "start_time": "2025-10-20 13:21:05",
+    "end_time": "2025-10-20 13:21:05",
+    "rpmdb_version_begin": "db92ff71fab2692ca0d1b8cfa155f30a599432c1df208799b08a6427a652d485",
+    "rpmdb_version_end": "4c5562e18d0860442d0ca2f53d5e27b9514357ef426d103f950d71778c9796ec",
+    "user_id": 0,
+    "user_name": "0 Super User <root>",
+    "status": "Ok",
+    "releasever": "42",
+    "description": "dnf install glibc-locale-source glibc-langpack-en",
+    "comment": "",
+    "packages": [
+      {
+        "nevra": "glibc-locale-source-0:2.41-11.fc42.x86_64",
+        "action": "Install",
+        "reason": "User",
+        "repository": "updates"
+      },
+      {
+        "nevra": "glibc-langpack-en-0:2.41-11.fc42.x86_64",
+        "action": "Install",
+        "reason": "User",
+        "repository": "updates"
+      }
+    ],
+    "groups": [],
+    "environments": []
+  }
+}
+[myuser@LAPTOP-409T8FMM dnf5
+]$ ./dnf5 history info
+Transaction ID : 40
+Begin time     : 2025-10-20 13: 21: 05
+Begin rpmdb    : db92ff71fab2692ca0d1b8cfa155f30a599432c1df208799b08a6427a652d485
+End time       : 2025-10-20 13: 21: 05
+End rpmdb      : 4c5562e18d0860442d0ca2f53d5e27b9514357ef426d103f950d71778c9796ec
+User           : 0 Super User <root>
+Status         : Ok
+Releasever     : 42
+Description    : dnf install glibc-locale-source glibc-langpack-en
+Comment        :
+Packages altered:
+  Action  Package                                   Reason Repository
+  Install glibc-locale-source-0: 2.41-11.fc42.x86_64 User   updates
+  Install glibc-langpack-en-0: 2.41-11.fc42.x86_64   User   updates
+
+[myuser@LAPTOP-409T8FMM dnf5
+]$

@@ -1,0 +1,1 @@
+sudo cp /home/myuser/dnf5/build/libdnf5-cli/po/cs.gmo /usr/share/locale/cs/LC_MESSAGES/libdnf5-cli.mo

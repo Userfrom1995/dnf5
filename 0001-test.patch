@@ -1,0 +1,45 @@
+From 9e1ae6e447dcf2f63587af979c91dc26c0072009 Mon Sep 17 00:00:00 2001
+From: user1995 <userfrom1995@gmail.com>
+Date: Mon, 2 Feb 2026 21:28:14 +0900
+Subject: [PATCH] test
+
+---
+ .../dbus/interfaces/org.rpm.dnf.v0.Advisory.xml        | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/dnf5daemon-server/dbus/interfaces/org.rpm.dnf.v0.Advisory.xml b/dnf5daemon-server/dbus/interfaces/org.rpm.dnf.v0.Advisory.xml
+index 1d2c44db..a261565d 100644
+--- a/dnf5daemon-server/dbus/interfaces/org.rpm.dnf.v0.Advisory.xml
++++ b/dnf5daemon-server/dbus/interfaces/org.rpm.dnf.v0.Advisory.xml
+@@ -49,22 +49,26 @@ along with libdnf.  If not, see <https://www.gnu.org/licenses/>.
+
+                 - "updates" - to return only advisories containing newer versions of installed packages for which an update is available
+             - names: list of strings
+-                Consider only advisories with one of given names.
++                Consider only advisories with one of the given advisory identifiers. Values must be exact advisory IDs (e.g., "FEDORA-2025-beb4c9a336" or "RHSA-2024:1234"). Globs/wildcards and package names are not accepted in this option.
+             - types: list of strings
+                 Consider only advisories of given types. Possible types are "security", "bugfix", "enhancement", and "newpackage".
+             - contains_pkgs: list of strings
+-                Consider only advisories containing one of given packages.
++                Consider only advisories containing packages with names matching one of given glob patterns. Matching is performed against package base names (for example "kernel", "bash", "buildah"). NEVRA strings or name.arch forms are not supported.
+             - severities: list of strings
+                 Consider only advisories of given severity. Possible values are "critical", "important", "moderate", "low", and "none".
+             - reference_bzs: list of strings
+                 Consider only advisories referencing given Bugzilla ticket ID. Expected values are numeric IDs, e.g. 123456.
+             - reference_cves: list of strings
+-                Consider only advisoried referencing given CVE ID. Expected values are strings IDs in CVE format, e.g. CVE-2201-0123.
++                Consider only advisories referencing given CVE ID. Expected values are strings IDs in CVE format, e.g. CVE-2201-0123.
+             - with_bz: boolean, default False
+                 Consider only advisories referencing a Bugzilla ticket.
+             - with_cve: boolean, default False
+                 Consider only advisories referencing a CVE ticket.
+
++        Note on filtering:
++        - When multiple "primary" filters (names, types, severities, reference_bzs, reference_cves) are provided, an advisory satisfies the condition if it matches ANY of these filters (OR logic).
++        - The resulting set of advisories is then narrowed by the remaining conditions (availability, contains_pkgs, with_bz, with_cve), which must ALL be satisfied (AND logic).
++
+         Unknown options are ignored.
+     -->
+     <method name="list">
+--
+2.52.0

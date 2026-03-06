@@ -1,0 +1,14 @@
+{
+  "transactions":[
+    {
+      "id":30,
+      "command_line":"dnf update",
+      "start_time":"2025-08-24 05:04:49",
+      "end_time":"2025-08-24 05:06:59",
+      "user_id":0,
+      "status":"Ok",
+      "releasever":"42",
+      "altered_count":594
+    }
+  ]
+}

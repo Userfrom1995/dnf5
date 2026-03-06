@@ -1,0 +1,190 @@
+# Configuration file for the Sphinx documentation builder.
+#
+# This file only contains a selection of the most common options. For a full
+# list see the documentation:
+# http://www.sphinx-doc.org/en/master/config
+
+# -- Path setup --------------------------------------------------------------
+
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here. If the directory is relative to the
+# documentation root, use os.path.abspath to make it absolute, like shown here.
+#
+import os
+import sphinx
+import sys
+
+try:
+    libdnf_docdir
+except NameError:
+    libdnf_docdir = os.path.abspath(".")
+
+sys.path.insert(0, os.path.join(libdnf_docdir, "sphinx"))
+sys.path.insert(0, os.path.join(libdnf_docdir, "../bindings/python3"))
+
+# -- Project information -----------------------------------------------------
+
+project = 'dnf5'
+copyright = 'Contributors to the dnf5 project.'
+author = 'RPM Software Management <rpm-ecosystem@lists.rpm.org>'
+
+AUTHORS = ['See AUTHORS.md in dnf5 source distribution.']
+
+
+# -- General configuration ---------------------------------------------------
+# If your documentation needs a minimal Sphinx version, state it here.
+needs_sphinx = '4.1.2'
+
+# Add any Sphinx extension module names here, as strings. They can be
+# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# ones.
+extensions = [
+    'breathe',
+    'autoapi.extension',
+]
+breathe_projects = {'dnf5': '/home/myuser/dnf5/doc/xml/'}
+breathe_default_project = 'dnf5'
+
+# Show undocumented members for both C++ and Python API docs
+breathe_default_members = ('members', 'undoc-members')
+
+# The autoapi config
+autoapi_type = 'python'
+autoapi_dirs = ['/home/myuser/dnf5/doc/../bindings/python3/libdnf5',
+                '/home/myuser/dnf5/doc/../bindings/python3/libdnf5_cli']
+autoapi_root = "api/python/autoapi"
+autoapi_python_use_implicit_namespaces = False
+# We don't want to automatically generate the full documentation.
+# Instead we use directives, this allows greater control and both
+# cpp and python docs can have the same look and layout.
+autoapi_generate_api_docs = False
+autoapi_add_toctree_entry = False
+autoapi_add_objects_to_toctree = False
+autoapi_options = [
+    'members',
+    'undoc-members',
+]
+
+if sphinx.version_info[:3] > (4, 0, 0):
+    tags.add('sphinx4')
+    extensions += ['dbusdoc']
+else:
+    extensions += ['fakedbusdoc']
+
+qapidoc_srctree = os.path.join(libdnf_docdir, '..')
+dbusdoc_srctree = os.path.join(libdnf_docdir, '..')
+dbus_index_common_prefix = ["org.rpm.dnf."]
+
+# Add any paths that contain templates here, relative to this directory.
+templates_path = ['_templates']
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+# This pattern also affects html_static_path and html_extra_path.
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+
+# -- Options for HTML output -------------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+#
+# html_theme = 'alabaster'
+# html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
+
+html_context = {
+    'display_github': True,
+    'github_user': 'rpm-software-management',
+    'github_repo': 'dnf5',
+    'github_version': 'main/doc/'
+}
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ['_static']
+
+
+# -- Options for manual page output --------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+man_pages = [
+    ('dnf5.8', 'dnf5', 'DNF5 Package Management Utility', AUTHORS, 8),
+    ('commands/advisory.8', 'dnf5-advisory', 'Advisory Command', AUTHORS, 8),
+    ('commands/autoremove.8', 'dnf5-autoremove', 'Autoremove Command', AUTHORS, 8),
+    ('commands/check.8', 'dnf5-check', 'Check Command', AUTHORS, 8),
+    ('commands/check-upgrade.8', 'dnf5-check-upgrade', 'Check-Upgrade Command', AUTHORS, 8),
+    ('commands/clean.8', 'dnf5-clean', 'Clean Command', AUTHORS, 8),
+    ('commands/distro-sync.8', 'dnf5-distro-sync', 'Distro-Sync Command', AUTHORS, 8),
+    ('commands/do.8', 'dnf5-do', 'Do Command', AUTHORS, 8),
+    ('commands/downgrade.8', 'dnf5-downgrade', 'Downgrade Command', AUTHORS, 8),
+    ('commands/download.8', 'dnf5-download', 'Download Command', AUTHORS, 8),
+    ('commands/environment.8', 'dnf5-environment', 'Environment Command', AUTHORS, 8),
+    ('commands/group.8', 'dnf5-group', 'Group Command', AUTHORS, 8),
+    ('commands/history.8', 'dnf5-history', 'History Command', AUTHORS, 8),
+    ('commands/info.8', 'dnf5-info', 'Info Command', AUTHORS, 8),
+    ('commands/install.8', 'dnf5-install', 'Install Command', AUTHORS, 8),
+    ('commands/leaves.8', 'dnf5-leaves', 'Leaves Command', AUTHORS, 8),
+    ('commands/list.8', 'dnf5-list', 'List Command', AUTHORS, 8),
+    ('commands/makecache.8', 'dnf5-makecache', 'Makecache Command', AUTHORS, 8),
+    ('commands/mark.8', 'dnf5-mark', ' Mark Command', AUTHORS, 8),
+    ('commands/module.8', 'dnf5-module', ' Module Command', AUTHORS, 8),
+    ('commands/offline.8', 'dnf5-offline', ' Offline Command', AUTHORS, 8),
+    ('commands/provides.8', 'dnf5-provides', 'Provides Command', AUTHORS, 8),
+    ('commands/reinstall.8', 'dnf5-reinstall', 'Reinstall Command', AUTHORS, 8),
+    ('commands/remove.8', 'dnf5-remove', 'Remove Command', AUTHORS, 8),
+    ('commands/replay.8', 'dnf5-replay', 'Replay Command', AUTHORS, 8),
+    ('commands/repo.8', 'dnf5-repo', 'Repo Command', AUTHORS, 8),
+    ('commands/repoquery.8', 'dnf5-repoquery', 'Repoquery Command', AUTHORS, 8),
+    ('commands/search.8', 'dnf5-search', 'Search Command', AUTHORS, 8),
+    ('commands/swap.8', 'dnf5-swap', 'Swap Command', AUTHORS, 8),
+    ('commands/system-upgrade.8', 'dnf5-system-upgrade', 'System-Upgrade Command', AUTHORS, 8),
+    ('commands/upgrade.8', 'dnf5-upgrade', 'Upgrade Command', AUTHORS, 8),
+    ('commands/versionlock.8', 'dnf5-versionlock', 'Versionlock Command', AUTHORS, 8),
+    ('dnf5_plugins/automatic.8', 'dnf5-automatic', 'Automatic Command', AUTHORS, 8),
+    ('dnf5_plugins/builddep.8', 'dnf5-builddep', 'Builddep Command', AUTHORS, 8),
+    ('dnf5_plugins/changelog.8', 'dnf5-changelog', 'Changelog Command', AUTHORS, 8),
+    ('dnf5_plugins/config-manager.8', 'dnf5-config-manager', 'Config-manager Command', AUTHORS, 8),
+    ('dnf5_plugins/copr.8', 'dnf5-copr', 'Copr Command', AUTHORS, 8),
+    ('dnf5_plugins/manifest.8', 'dnf5-manifest', 'Manifest Command', AUTHORS, 8),
+    ('dnf5_plugins/needs_restarting.8', 'dnf5-needs-restarting', 'Needs-restarting Command', AUTHORS, 8),
+    ('dnf5_plugins/repoclosure.8', 'dnf5-repoclosure', 'Repoclosure Command', AUTHORS, 8),
+    ('dnf5_plugins/repomanage.8', 'dnf5-repomanage', 'Repomanage Command', AUTHORS, 8),
+    ('dnf5_plugins/reposync.8', 'dnf5-reposync', 'Reposync Command', AUTHORS, 8),
+    ('libdnf5_plugins/actions.8', 'libdnf5-actions', 'Actions Plugin', AUTHORS, 8),
+    ('libdnf5_plugins/expired-pgp-keys.8', 'libdnf5-expired-pgp-keys', 'Expired PGP Keys Plugin', AUTHORS, 8),
+    ('libdnf5_plugins/local.8', 'libdnf5-local', 'Local Plugin', AUTHORS, 8),
+    ('misc/aliases.7', 'dnf5-aliases', 'Aliases for command line arguments', AUTHORS, 7),
+    ('misc/caching.7', 'dnf5-caching', 'Caching', AUTHORS, 7),
+    ('misc/comps.7', 'dnf5-comps', 'Comps Groups And Environments', AUTHORS, 7),
+    ('misc/filtering.7', 'dnf5-filtering', 'Packages Filtering', AUTHORS, 7),
+    ('misc/forcearch.7', 'dnf5-forcearch', 'Forcearch Parameter', AUTHORS, 7),
+    ('misc/installroot.7', 'dnf5-installroot', 'Installroot Parameter', AUTHORS, 7),
+    ('misc/modularity.7', 'dnf5-modularity', 'Modularity Overview', AUTHORS, 7),
+    ('misc/specs.7', 'dnf5-specs', 'Patterns Specification', AUTHORS, 7),
+    ('misc/system-state.7', 'dnf5-system-state', 'System state', AUTHORS, 7),
+    ('changes_from_dnf4.7', 'dnf5-changes-from-dnf4', 'Changes from the DNF4', AUTHORS, 7),
+    ('dnf_daemon/dnf5daemon_client.8', 'dnf5daemon-client', 'Command-line interface for Dnf5daemon', AUTHORS, 8),
+    ('dnf_daemon/dnf5daemon_server.8', 'dnf5daemon-server', 'Package management service with a DBus interface', AUTHORS, 8),
+    ('dnf_daemon/dnf5daemon_dbus_api.8', 'dnf5daemon-dbus-api', 'DBus API Reference for Dnf5daemon', AUTHORS, 8),
+    ('dnf5.conf.5', 'dnf5.conf', 'DNF5 Configuration Reference', AUTHORS, 5),
+    ('dnf5.conf-vendorpolicy.5', 'dnf5.conf-vendorpolicy', 'DNF5 Vendor Change Policy File Reference', AUTHORS, 5),
+    ('dnf5.conf-vendorpolicy-v1_0.5', 'dnf5.conf-vendorpolicy-v1_0',
+     'DNF5 Vendor Change Policy File Reference - v1.0', AUTHORS, 5),
+    ('dnf5.conf-vendorpolicy-v1_1.5', 'dnf5.conf-vendorpolicy-v1_1',
+     'DNF5 Vendor Change Policy File Reference - v1.1', AUTHORS, 5),
+    ('dnf5.conf-todo.5', 'dnf5.conf-todo', 'Options that are documented/implemented in DNF but not in DNF5', AUTHORS, 5),
+    ('dnf5.conf-deprecated.5', 'dnf5.conf-deprecated', 'Config Options that are deprecated in DNF5', AUTHORS, 5),
+]
+
+dnf_makecache_timer_name = "dnf-makecache.timer" if "@WITH_DNF5_OBSOLETES_DNF@" == "ON" else "dnf5-makecache.timer"
+dnf_makecache_service_name = "dnf-makecache.service" if "@WITH_DNF5_OBSOLETES_DNF@" == "ON" else "dnf5-makecache.service"
+
+rst_prolog = f"""
+.. _DNF: https://github.com/rpm-software-management/dnf/
+.. _DNF5: https://github.com/rpm-software-management/dnf5/
+.. |DNF_MAKECACHE_TIMER_NAME_INLINE_LITERAL| replace:: ``{dnf_makecache_timer_name}``
+.. |DNF_MAKECACHE_SERVICE_NAME_INLINE_LITERAL| replace:: ``{dnf_makecache_service_name}``
+"""

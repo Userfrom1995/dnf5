@@ -1,0 +1,66 @@
+[myuser@LAPTOP-409T8FMM dnf5
+]$ ./dnf5 history list 1..5 --json
+{
+  "transactions": [
+    {
+      "id": 5,
+      "command_line": "dnf install -y man man-pages",
+      "start_time": "2025-05-04 15:47:20",
+      "end_time": "2025-05-04 15:47:20",
+      "user_id": 0,
+      "status": "Ok",
+      "releasever": "42",
+      "altered_count": 1
+    },
+    {
+      "id": 4,
+      "command_line": "dnf install -y micro",
+      "start_time": "2025-05-04 15:46:51",
+      "end_time": "2025-05-04 15:46:51",
+      "user_id": 0,
+      "status": "Ok",
+      "releasever": "42",
+      "altered_count": 1
+    },
+    {
+      "id": 3,
+      "command_line": "dnf reinstall -y shadow-utils",
+      "start_time": "2025-05-04 15:45:53",
+      "end_time": "2025-05-04 15:45:53",
+      "user_id": 0,
+      "status": "Ok",
+      "releasever": "42",
+      "altered_count": 2
+    },
+    {
+      "id": 2,
+      "command_line": "dnf install -y passwd cracklib-dicts",
+      "start_time": "2025-05-04 15:38:12",
+      "end_time": "2025-05-04 15:38:12",
+      "user_id": 0,
+      "status": "Ok",
+      "releasever": "42",
+      "altered_count": 1
+    },
+    {
+      "id": 1,
+      "command_line": "dnf install --installroot=\/home\/user1995\/fedora42-rootfs --releasever=42 --setopt=install_weak_deps=False --setopt=module_platform_id=platform:f42 --use-host-config --nodocs -y @core",
+      "start_time": "2025-05-04 14:00:50",
+      "end_time": "2025-05-04 14:04:07",
+      "user_id": 1000,
+      "status": "Ok",
+      "releasever": "42",
+      "altered_count": 267
+    }
+  ]
+}
+[myuser@LAPTOP-409T8FMM dnf5
+]$ ./dnf5 history list 1..5
+ID Command line                       Date and time       Action(s) Altered
+ 5 dnf install -y man man-pages       2025-05-04 15: 47: 20                 1
+ 4 dnf install -y micro               2025-05-04 15: 46: 51                 1
+ 3 dnf reinstall -y shadow-utils      2025-05-04 15: 45: 53                 2
+ 2 dnf install -y passwd cracklib-dic 2025-05-04 15: 38: 12                 1
+ 1 dnf install --installroot=/home/us 2025-05-04 14: 00: 50               267
+[myuser@LAPTOP-409T8FMM dnf5
+]$
