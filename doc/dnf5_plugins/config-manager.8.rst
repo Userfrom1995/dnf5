@@ -39,7 +39,7 @@ Manages main configuration, repositories configuration, and variables.
 Subcommands
 ===========
 
-``addrepo --from-repofile=REPO_CONFIGURATION_FILE_URL [--create-missing-dir] [--overwrite] [--save-filename=FILENAME]``
+``addrepo --from-repofile REPO_CONFIGURATION_FILE_URL [--create-missing-dir] [--overwrite] [--save-filename FILENAME]``
     Adds a new repositories configuration file specified by URL or local path.
 
     The file is copied without changes. The destination file name can be defined using the ``--save-filename`` option,
@@ -51,10 +51,10 @@ Subcommands
     Before the new repositories configuration file is finally saved, it is analyzed and tested for validity.
     Repository IDs are also tested. Repositories with the same ID must not be defined in other configuration files.
 
-``addrepo [--id=REPO_ID] <--set=REPO_OPTION=VALUE>+ [--add-or-replace] [--create-missing-dir] [--overwrite] [--save-filename=FILENAME]``
+``addrepo [--id REPO_ID] <--set REPO_OPTION=VALUE>+ [--add-or-replace] [--create-missing-dir] [--overwrite] [--save-filename FILENAME]``
     Adds a new repository defined using user options.
 
-    At least one of ``--set=baseurl=<URL>``, ``--set=mirrorlist=<URL>``, ``--set=metalink=<URL>`` must be set
+    At least one of ``--set baseurl=<URL>``, ``--set mirrorlist=<URL>``, ``--set metalink=<URL>`` must be set
     to a non-empty URL. The repository ID can be defined using the ``--id`` option, otherwise it is generated from the URL.
     The destination file name can be defined using the ``--save-filename`` option, otherwise it is set to the repository ID.
     If the ``.repo`` extension is missing from the destination filename, it will be added.
@@ -148,32 +148,32 @@ Options
 ``--create-missing-dir``
     Allow creation of missing directories.
 
-``--from-repofile=REPO_CONFIGURATION_FILE_URL``
+``--from-repofile REPO_CONFIGURATION_FILE_URL``
     Specifies the source configuration file with the new repositories.
 
-``--id=REPO_ID``
+``--id REPO_ID``
     Set ID for newly created repository.
 
 ``--overwrite``
     Allow replacing the existing repository configuration file by new one.
 
-``--save-filename=FILENAME``
+``--save-filename FILENAME``
     Set the name of the new repository configuration file. The ``.repo`` extension is added if it is missing.
 
-``--set=REPO_OPTION=VALUE``
+``--set REPO_OPTION=VALUE``
     Set option in newly created repository.
 
 
 Examples
 ========
 
-``dnf5 config-manager addrepo --from-repofile=http://example.com/some/additional.repo``
+``dnf5 config-manager addrepo --from-repofile http://example.com/some/additional.repo``
     Download ``additional.repo``, test it, and put it in repository configuration directory.
 
-``dnf5 config-manager addrepo --set=baseurl=http://example.com/different/repo``
+``dnf5 config-manager addrepo --set baseurl=http://example.com/different/repo``
     Create new repo file with ``http://example.com/different/repo`` as ``baseurl`` and enable it. The repository ID and target file name is generated from ``baseurl``.
 
-``dnf5 config-manager addrepo --set=baseurl=http://example.com/different/rep --id=example --set=enabled=0``
+``dnf5 config-manager addrepo --set baseurl=http://example.com/different/rep --id example --set enabled=0``
     Create new repo file with ``http://example.com/different/repo`` as ``baseurl``. Set repository ID to ``example`` and disable it.
 
 ``dnf5 config-manager setopt repoid1.enabled=1 repoid2.enabled=0``

@@ -201,24 +201,24 @@ Following options are applicable in the general context for any ``dnf5`` command
     | Use only cached data for working with packages and repository metadata.
     | Cache won't be updated, even if it is expired.
 
-``--comment=COMMENT``
+``--comment COMMENT``
     | Add a comment to the transaction history.
 
 .. _config_option_ref-label:
 
-``--config=CONFIG_FILE_PATH``
+``--config CONFIG_FILE_PATH``
     | Define configuration file location.
 
 ``--debugsolver``
     | Dump additional data from solver for debugging purposes.
     | Data are saved in ``./debugdata``.
 
-``--disable-plugin=PLUGIN_NAME,...``
+``--disable-plugin PLUGIN_NAME,...``
     | Disable specified libdnf5 library plugins for the purpose of the current ``DNF5`` command.
     | This is a list option which can be specified multiple times.
     | Accepted values are names, or a glob of names.
 
-``--disable-repo=REPO_ID,...``
+``--disable-repo REPO_ID,...``
     | Temporarily disable active repositories for the purpose of the current ``DNF5`` command.
     | This is a list option which can be specified multiple times.
     | Accepted values are ids, or a glob of ids.
@@ -228,7 +228,7 @@ Following options are applicable in the general context for any ``dnf5`` command
 
 .. _dump_repo_config_option_ref-label:
 
-``--dump-repo-config=REPO_ID,...``
+``--dump-repo-config REPO_ID,...``
     | Print repository configuration values to stdout.
     | This is a list option which can be specified multiple times.
     | Accepted values are ids, or a glob of ids.
@@ -236,17 +236,17 @@ Following options are applicable in the general context for any ``dnf5`` command
 ``--dump-variables``
     | Print variable values to stdout.
 
-``--enable-plugin=PLUGIN_NAME,...``
+``--enable-plugin PLUGIN_NAME,...``
     | Enable specified libdnf5 library plugins for the purpose of the current ``DNF5`` command.
     | This is a list option which can be specified multiple times.
     | Accepted values are names, or a glob of names.
 
-``--enable-repo=REPO_ID,...``
+``--enable-repo REPO_ID,...``
     | Temporarily enable additional repositories for the purpose of the current ``DNF5`` command.
     | This is a list option which can be specified multiple times.
     | Accepted values are ids, or a glob of ids.
 
-``--forcearch=ARCH``
+``--forcearch ARCH``
     | Force the use of a specific architecture.
     | :ref:`See <forcearch_misc_ref-label>` :manpage:`dnf5-forcearch(7)` for more info.
 
@@ -255,7 +255,7 @@ Following options are applicable in the general context for any ``dnf5`` command
 ``-h, --help``
     | Show the help.
 
-``--installroot=ABSOLUTE_PATH``
+``--installroot ABSOLUTE_PATH``
     | Setup installroot path.
     | Absolute path is required.
     | :ref:`See <installroot_misc_ref-label>` :manpage:`dnf5-installroot(7)` for more info.
@@ -283,47 +283,47 @@ Following options are applicable in the general context for any ``dnf5`` command
 ``--refresh``
     | Force refreshing metadata before running the command.
 
-``--color=<color>``
+``--color <color>``
     | Control whether color is used in terminal output. Valid values are ``always``, ``never`` and ``auto`` (default).
 
-``--repo=REPO_ID,...``
+``--repo REPO_ID,...``
     | Enable just specified repositories.
     | This is a list option which can be specified multiple times.
     | Accepted values are ids, or a glob of ids.
 
-``--repofrompath=REPO_ID,REPO_PATH``
+``--repofrompath REPO_ID,REPO_PATH``
     Specify a repository to add to the repositories only for this run. Can be used multiple times.
 
     The new repository id is specified by ``REPO_ID`` and its baseurl by ``REPO_PATH``. Variables in both values are substituted before creating the repo.
 
-    The configuration of the new repository can be adjusted using options ``--setopt=REPO_ID.option=value``.
+    The configuration of the new repository can be adjusted using options ``--setopt REPO_ID.option=value``.
 
-    If you want only packages from this repository to be available, combine this option with ``--repo=REPO_ID`` switch.
+    If you want only packages from this repository to be available, combine this option with ``--repo REPO_ID`` switch.
 
-``--releasever=RELEASEVER``
+``--releasever RELEASEVER``
     Override the value of the distribution release (the ``releasever`` variable) in configuration files.
     This can affect cache paths, values in configuration files and mirrorlist URLs.
     Whenever ``releasever`` is set, ``releasever_major`` and ``releasever_minor`` will also be set by splitting ``releasever`` on the first ``.``.
 
-``--releasever-major=RELEASEVER_MAJOR``
+``--releasever-major RELEASEVER_MAJOR``
     Override the ``releasever_major`` variable, which is usually automatically detected or taken from the part of ``$releasever`` before the first ``.``.
     Does not affect the setting of the ``releasever`` variable.
     Must be specified after ``--releasever`` on the command line, otherwise the major part of the ``--releasever`` will take precedent.
 
-``--releasever-minor=RELEASEVER_MINOR``
+``--releasever-minor RELEASEVER_MINOR``
     Override the ``releasever_minor`` variable, which is usually automatically detected or taken from the part of ``$releasever`` after the first ``.``.
     Does not affect the setting of the ``releasever`` variable.
     Must be specified after ``--releasever`` on the command line, otherwise the minor part of the ``--releasever`` will take precedent.
 
-``--setopt=[REPO_ID.]OPTION=VALUE``
+``--setopt [REPO_ID.]OPTION=VALUE``
     | Override a configuration option from the configuration file.
     | The ``REPO_ID`` parameter is used to override options for repositories.
 
     Values for the options like ``excludepkgs``, ``includepkgs``, ``installonlypkgs`` and ``tsflags``
     are appended to the original value, they do not override it. However, specifying an empty
-    value (e.g. ``--setopt=tsflags=``) will clear the option.
+    value (e.g. ``--setopt tsflags=``) will clear the option.
 
-``--setvar=VAR_NAME=VALUE``
+``--setvar VAR_NAME=VALUE``
     | Override a ``DNF5`` variable value, like ``arch``, ``releasever``, etc.
 
 ``--skip-file-locks``
@@ -349,7 +349,7 @@ Following options are applicable in the general context for any ``dnf5`` command
 ``-y, --assumeyes``
     | Automatically answer yes for all questions.
 
-``-x PACKAGE-SPEC-N,..., --exclude=PACKAGE-SPEC-N,...``
+``-x PACKAGE-SPEC-N,..., --exclude PACKAGE-SPEC-N,...``
     | Exclude packages specified in ``PACKAGE-SPEC-N`` arguments from the transaction.
     | This is a list option.
 

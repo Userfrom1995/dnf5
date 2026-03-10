@@ -78,7 +78,7 @@ Options for ``list`` and ``info``
 ``--reverse``
     | Reverse the order of transactions in the output.
 
-``--contains-pkgs=PACKAGE_NAME,...``
+``--contains-pkgs PACKAGE_NAME,...``
     | Show only transactions containing packages with specified names.
     | This is a list option. Globs are supported.
 

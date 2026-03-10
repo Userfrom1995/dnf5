@@ -120,29 +120,29 @@ Examples:
         descr.cs_CZ = "Alias pro 'group list'"
         complete = true
 
-  - Alias ``list-fedora-all`` for ``--repo=fedora list --showduplicates``:
+  - Alias ``list-fedora-all`` for ``--repo fedora list --showduplicates``:
 
     .. code-block:: TOML
 
         ['list-fedora-all']
         type = 'command'
         attached_command = 'list'
-        descr.C = "Alias for '--repo=fedora list --showduplicates'"
-        descr.cs_CZ = "Alias pro '--repo=fedora list --showduplicates'"
+        descr.C = "Alias for '--repo fedora list --showduplicates'"
+        descr.cs_CZ = "Alias pro '--repo fedora list --showduplicates'"
         complete = true
         attached_named_args = [
             { id_path = 'repo', value = 'fedora' },
             { id_path = 'list.showduplicates' }
         ]
 
-  - Alias ``whatrequires`` for ``repoquery --installed --whatrequires=<requires_first_argument>``:
+  - Alias ``whatrequires`` for ``repoquery --installed --whatrequires <requires_first_argument>``:
 
     .. code-block:: TOML
 
         ['whatrequires']
         type = 'command'
         attached_command = 'repoquery'
-        descr = 'Alias for "repoquery --installed --whatrequires=<whatrequires_first_argument>"'
+        descr = 'Alias for "repoquery --installed --whatrequires <whatrequires_first_argument>"'
         complete = true
 
         [[whatrequires.required_values]]
@@ -214,10 +214,10 @@ Keys:
     - ``has_value`` - Whether the option requires a value. The value is then substituted for ``${}`` strings in the
       values of ``attached_named_args``. Default is false.
     - ``value_help.<locale>`` - The string shown in help for the value (e.g. ``CONFIG_FILE_PATH`` for
-      ``--config=CONFIG_FILE_PATH``). ``value_help.C`` is used if a string for the appropriate locale is not found.
+      ``--config CONFIG_FILE_PATH``). ``value_help.C`` is used if a string for the appropriate locale is not found.
       Added in config file version 1.1.
     - ``value_help`` - The string shown in help for the value (e.g. ``CONFIG_FILE_PATH`` for
-      ``--config=CONFIG_FILE_PATH``). Deprecated in version 1.1, but remains backward compatible.
+      ``--config CONFIG_FILE_PATH``). Deprecated in version 1.1, but remains backward compatible.
       Does not support locales.
     - ``const_value`` - Default constant value (specified only if the alias does not have a value on the command line).
       The value is then substituted for ``${}`` strings in the values of ``attached_named_args``.
@@ -242,7 +242,7 @@ Examples:
             { id_path = 'list.available' }
         ]
 
-  - Alias ``download --dest=DESTDIR`` for ``download --destdir=DESTDIR``:
+  - Alias ``download --dest DESTDIR`` for ``download --destdir DESTDIR``:
 
     .. code-block:: TOML
 
@@ -255,7 +255,7 @@ Examples:
             { id_path = 'download.destdir' }
         ]
 
-  - Alias ``--settsflags=TS_FLAGS`` for ``--setopt=tsflags=TS_FLAGS``:
+  - Alias ``--settsflags TS_FLAGS`` for ``--setopt tsflags=TS_FLAGS``:
 
     .. code-block:: TOML
 

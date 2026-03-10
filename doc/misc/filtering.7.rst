@@ -36,7 +36,7 @@ Global excludes filtering
 
 Exclude filtering can be adjusted using the ``includepkgs`` or ``excludepkgs`` configuration options in the DNF5 configuration file. To disable excludes, you can use the ``disable_excludes`` configuration option:
 
-``dnf5 --setopt=disable_excludes=* install bash``
+``dnf5 --setopt disable_excludes=* install bash``
 
 For details about the configuration options see :manpage:`dnf5.conf(5)`, :ref:`DNF5 configuration reference <dnf5_conf-label>`.
 
@@ -71,7 +71,7 @@ For details on how modular filtering works please see :manpage:`dnf5-modularity(
 With modularity, only RPM packages from ``active`` module streams are included in the available package set. RPM packages from ``inactive`` module streams, as well as non-modular packages with the same name or provides as a package from an ``active`` module stream, are filtered out. Modular filtering is not applied to packages added from the command line, installed packages, or packages from repositories with ``module_hotfixes=true`` in their ``.repo`` file.
 
 Disabling of modular filtering is not recommended, because it could cause the system to get into a broken state. To disable modular filtering for a particular repository, specify
-``module_hotfixes=true`` in the ``.repo`` file or use ``--setopt=<repo_id>.module_hotfixes=true``.
+``module_hotfixes=true`` in the ``.repo`` file or use ``--setopt <repo_id>.module_hotfixes=true``.
 
 ..
     # TODO(mblaha) - `dnf5 module provides` command is not implemented yet

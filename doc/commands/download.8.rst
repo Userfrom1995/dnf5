@@ -53,7 +53,7 @@ Options
 
 .. include:: ../_shared/options/from-vendor.rst
 
-``--destdir=<path>``
+``--destdir <path>``
     | Set directory used for downloading packages to. Default location is to the current working directory.
 
 ``--skip-unavailable``

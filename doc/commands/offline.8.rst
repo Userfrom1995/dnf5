@@ -47,7 +47,7 @@ Subcommands
     | Removes any stored offline transaction and deletes cached package files.
 
 ``log``
-    | Used to see a list of boots during which an offline transaction was attempted, or show the logs from an attempted offline transaction. The logs for one of the boots can be shown by specifying one of the numbers in the first column with the ``--number`` argument. Negative numbers can be used to number the boots from last to first. For example, ``log --number=-1`` can be used to see the logs for the last offline transaction.
+    | Used to see a list of boots during which an offline transaction was attempted, or show the logs from an attempted offline transaction. The logs for one of the boots can be shown by specifying one of the numbers in the first column with the ``--number`` argument. Negative numbers can be used to number the boots from last to first. For example, ``log --number -1`` can be used to see the logs for the last offline transaction.
 
 ``reboot``
     | Prepares the system to perform the offline transaction and reboots to start the transaction. This command can only be run after an offline transaction is initiated (e.g. by ``dnf5 system-upgrade download``).
@@ -65,7 +65,7 @@ Subcommands
 Options
 =======
 
-``--number=<boot number>``
+``--number <boot number>``
     | Show the log specified by the number. Run ``dnf5 offline log`` with ``--number`` first to get a list of logs to choose from.
     | Used with the ``log`` subcommand.
 
@@ -96,7 +96,7 @@ Examples
 ``dnf5 offline log``
     | List boots during which an offline transaction was attempted.
 
-``dnf5 offline log --number=-1``
+``dnf5 offline log --number -1``
     | View the log from the latest boot during which an offline transaction was attempted.
 
 

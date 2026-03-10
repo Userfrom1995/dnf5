@@ -35,8 +35,8 @@ Examples: ``--best`` and ``--no-best``.
 
 Strict behavior
 ^^^^^^^^^^^^^^^
-  * Options ``--disable-repo=REPO_ID`` and ``--setopt=[REPO_ID.]OPTION=VALUE`` now consistently result in an error when provided with an invalid ``REPO_ID``.
-  * The behavior is now aligned with the ``--repo=REPO_ID`` and ``--enable-repo=REPO_ID``.
+  * Options ``--disable-repo REPO_ID`` and ``--setopt [REPO_ID.]OPTION=VALUE`` now consistently result in an error when provided with an invalid ``REPO_ID``.
+  * The behavior is now aligned with the ``--repo REPO_ID`` and ``--enable-repo REPO_ID``.
   * The ``strict`` configuration option is no longer considered, see the :ref:`strict option deprecation <strict_option_conf_changes_ref-label>` for more information.
 
 
@@ -44,7 +44,7 @@ No value separator after short options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Short options do not have a separator between the option name and the option
 value. E.g. ``dnf -x package`` is equivalent to ``dnf --exclude package`` and
-``dnf --exclude=package`` long forms. But ``dnf -x=package`` means
+``dnf --exclude package`` long forms. But ``dnf -x=package`` means
 ``dnf --exclude =package``.
 
 Changes to individual options
@@ -81,7 +81,7 @@ Changes to individual options
   * See the :ref:`installroot documentation <installroot_misc_ref-label>` for more information.
 
 ``--noautoremove``
-  * Applicable only for the ``remove`` command now. As a workaround for other commands, you can use ``--setopt=clean_requirements_on_remove=False``.
+  * Applicable only for the ``remove`` command now. As a workaround for other commands, you can use ``--setopt clean_requirements_on_remove=False``.
 
 ``--obsoletes``
   * Dropped. Now only the ``obsoletes`` configuration option is available.
@@ -110,7 +110,7 @@ Newly introduced options
   * Applicable to ``install``, ``upgrade``, and related commands.
 
 ``--dump-main-config``
-  * Along with related ``--dump-repo-config=REPO_ID``, these are new options to print configuration values on the standard output.
+  * Along with related ``--dump-repo-config REPO_ID``, these are new options to print configuration values on the standard output.
 
 ``--offline``
   * Store the transaction to be performed offline.
@@ -175,7 +175,7 @@ Changes to individual commands
   * Dropped the ``--dump`` option:
 
         * To dump main configuration options use ``dnf5 --dump-main-config`` command.
-        * To dump a repository configuration use ``dnf5 --dump-repo-config=REPO_ID`` command.
+        * To dump a repository configuration use ``dnf5 --dump-repo-config REPO_ID`` command.
 
   * Dropped the ``--dump-variables`` option, use ``dnf5 --dump-variables`` command instead.
   * See the :ref:`config-manager documentation <config_manager_plugin_ref-label>` for more information.
@@ -214,7 +214,7 @@ Changes to individual commands
 
 ``history``
   * Subcommands are now mandatory: ``dnf history`` has to be now ``dnf5 history list``.
-  * The ``history`` commands now only accept transaction ID arguments; to filter by packages, use the ``--contains-pkgs=PACKAGE_NAME,...`` option, available for ``list`` and ``info``.
+  * The ``history`` commands now only accept transaction ID arguments; to filter by packages, use the ``--contains-pkgs PACKAGE_NAME,...`` option, available for ``list`` and ``info``.
   * ``undo`` subcommand now accepts ``--ignore-extras`` and ``--ignore-installed`` like original ``history replay`` command.
   * ``userinstalled`` subcommand was dropped. It is replaced by ``dnf repoquery --userinstalled``.
   * ``store`` subcommand now creates a directory with transaction JSON file instead of a single transaction JSON file directly.
@@ -298,9 +298,9 @@ Changes to individual commands
   * ``--queryformat, --qf`` no longer prints an additional newline at the end of each formatted string, bringing it closer to the behavior of ``rpm --query``. To get the newline, use an explicit ``\n`` sequence in the formatting string.
   * ``--queryformat`` no longer supports ``size`` tag because it was printing install size for installed packages and download size for not-installed packages, which could be confusing.
   * Option ``--source`` was renamed to ``--sourcerpm``, and it now matches queryformat's ``sourcerpm`` tag.
-  * Option ``--resolve`` was changed to ``--providers-of=PACKAGE_ATTRIBUTE``. It no longer interacts with the formatting options such as ``--requires``, ``--provides``, ``--suggests``, etc. Instead, it takes the PACKAGE_ATTRIBUTE value directly.
+  * Option ``--resolve`` was changed to ``--providers-of PACKAGE_ATTRIBUTE``. It no longer interacts with the formatting options such as ``--requires``, ``--provides``, ``--suggests``, etc. Instead, it takes the PACKAGE_ATTRIBUTE value directly.
 
-    * For example, ``dnf rq --resolve --requires glibc`` is now ``dnf rq --providers-of=requires glibc``.
+    * For example, ``dnf rq --resolve --requires glibc`` is now ``dnf rq --providers-of requires glibc``.
 
   * See the :ref:`Repoquery command <repoquery_command_ref-label>` for more information.
 
@@ -332,8 +332,8 @@ Changes to individual commands
 
   * Subcommands are now mandatory: ``dnf updateinfo`` is now ``dnf5 advisory summary``.
   * Options ``--summary``, ``--list`` and ``--info`` have been changed to subcommands. See ``dnf5 advisory --help``.
-  * Option ``--sec-severity`` has been renamed to ``--advisory-severities=ADVISORY_SEVERITY,...``.
-  * The ``advisory`` commands now only accept advisory IDs; to filter by packages, use the ``--contains-pkgs=PACKAGE_NAME,...`` option.
+  * Option ``--sec-severity`` has been renamed to ``--advisory-severities ADVISORY_SEVERITY,...``.
+  * The ``advisory`` commands now only accept advisory IDs; to filter by packages, use the ``--contains-pkgs PACKAGE_NAME,...`` option.
   * Dropped deprecated aliases: ``list-updateinfo``, ``list-security``, ``list-sec``, ``info-updateinfo``, ``info-security``, ``info-sec``, ``summary-updateinfo``.
   * Dropped ``upif`` alias.
 
@@ -374,7 +374,7 @@ DNF: ``Package.size``, libdnf: ``dnf_package_get_size()``
 
 
 ``ConfigMain::proxy_auth_method()`` and ``ConfigRepo::proxy_auth_method()``
-  * The return types were changed. ``OptionEnum<std::string>`` was replaced by ``OptionStringSet``. A combination of several authentication methods (for example "basic" and "digest") can now be used. This allows using a list of authentication methods in configuration files and the DNF5 command line "--setopt=proxy_auth_method=".
+  * The return types were changed. ``OptionEnum<std::string>`` was replaced by ``OptionStringSet``. A combination of several authentication methods (for example "basic" and "digest") can now be used. This allows using a list of authentication methods in configuration files and the DNF5 command line "--setopt proxy_auth_method=".
 
 
 .. _conf_changes_ref-label:

@@ -39,11 +39,11 @@ Show package changelogs.
 Options
 =======
 
-``--since=DATE``
+``--since DATE``
     | Show only changelog entries since ``DATE``.
     | `YYYY-MM-DD` date format is expected.
 
-``--count=VALUE``
+``--count VALUE``
     | Limit the number of changelog entries shown per package to ``VALUE``.
 
 ``--upgrades``
@@ -53,10 +53,10 @@ Options
 Examples
 ========
 
-``dnf5 changelog --since=2023-04-01``
+``dnf5 changelog --since 2023-04-01``
     | Display changelog entries since April 1, 2023 for all packages.
 
-``dnf5 changelog --count=5 bash``
+``dnf5 changelog --count 5 bash``
     | Display the 3 latest changelogs for the ``bash`` package.
 
 

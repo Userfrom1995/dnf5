@@ -32,7 +32,7 @@ Typical DNF5 workflow consists of:
     * perform Vars substitution on repository id and all values (See :ref:`Repo Variables <repo_variables-label>` for details.)
 #. create repos from paths (such as --repofrompath arg)
     * perform Vars substitution on specified id and path
-#. apply repository setopts (such as --setopt=fedora.metadata_expire=0)
+#. apply repository setopts (such as --setopt fedora.metadata_expire=0)
 #. run command specific ``configure`` step
 #. libdnf5 plugin ``repos_configured`` hook
 #. if command requires privileges check for them

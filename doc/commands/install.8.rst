@@ -115,7 +115,7 @@ Examples
     | Install the ``tito`` package in defined version.
     | If the package is already installed, it will automatically try to downgrade or upgrade to the given version.
 
-``dnf5 install --advisory=FEDORA-2022-07aa56297a \*``
+``dnf5 install --advisory FEDORA-2022-07aa56297a \*``
     | Install all the packages that belong to the ``FEDORA-2022-07aa56297a`` advisory.
 
 

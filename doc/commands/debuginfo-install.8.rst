@@ -62,10 +62,10 @@ Examples
 ``dnf debuginfo-install foobar``
     Install the debuginfo packages for the foobar package.
 
-``dnf upgrade --enablerepo=*-debuginfo <package-name>-debuginfo``
+``dnf upgrade --enablerepo *-debuginfo <package-name>-debuginfo``
     Upgrade debuginfo package of a <package-name>.
 
-``dnf upgrade --enablerepo=*-debuginfo "*-debuginfo"``
+``dnf upgrade --enablerepo *-debuginfo "*-debuginfo"``
     Upgrade all debuginfo packages.
 
 
