@@ -59,7 +59,7 @@ Subcommands
 Options
 =======
 
-``--releasever=<version>``
+``--releasever <version>``
     | Required. The version to upgrade to. Sets ``$releasever`` in all enabled repos. Usually a number, or ``rawhide``.
 
 ``--no-downgrade``
@@ -68,7 +68,7 @@ Options
 ``--allowerasing``
     | Allow removing of installed packages to resolve any potential dependency problems.
 
-``--number=<boot number>``
+``--number <boot number>``
     | See :manpage:`dnf5-offline(8)`, :ref:`Offline command <offline_command_ref-label>`
 
 ``--poweroff``
@@ -97,7 +97,7 @@ Typical upgrade usage
 Show logs from last upgrade attempt
 -----------------------------------
 
-``dnf5 system-upgrade log --number=-1``
+``dnf5 system-upgrade log --number -1``
 
 
 See Also

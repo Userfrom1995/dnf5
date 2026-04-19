@@ -41,13 +41,13 @@ By default, ``reposync`` synchronizes all enabled repositories. However, you can
 Options
 =======
 
-``--arch=<architecture>, -a <architecture>``
+``--arch <architecture>, -a <architecture>``
     Download only packages for the specified architecture. This option can be specified multiple times. The default behavior is to download packages for all architectures.
 
 ``--delete``
     Remove local packages that are no longer present in the remote repository.
 
-``--destdir=<path>``
+``--destdir <path>``
     Specifies the root path where downloaded repositories are stored, relative
     to the current working directory. Defaults to the current working
     directory. Each downloaded repository will have a subdirectory named after
@@ -68,7 +68,7 @@ Options
     Note: For repositories configured with ``gpgcheck=0``, OpenPGP signatures are not
     checked, even when this option is used.
 
-``--metadata-path=<path>``
+``--metadata-path <path>``
     Specifies the root path where downloaded metadata files are stored. If not
     specified, it defaults to the value of ``--destdir``.
 
@@ -84,7 +84,7 @@ Options
     Attempts to set the timestamps of local downloaded files to match those on
     the remote side.
 
-``--safe-write-path=<path>``
+``--safe-write-path <path>``
     Defines the filesystem path prefix where reposync is allowed to write
     files. If not specified, it defaults to the repository's download path.
     This option is useful for repositories that use relative locations of
@@ -95,7 +95,7 @@ Options
     can only be used when syncing a single repository.
 
 ``--srpm``
-    Downloads source packages. Equivalent to using ``--arch=src``.
+    Downloads source packages. Equivalent to using ``--arch src``.
 
 ``--urls, -u``
     Prints the URLs of the files that would be downloaded without actually
@@ -106,19 +106,19 @@ Options
 Examples
 ========
 
-``dnf reposync --repoid=the_repo``
+``dnf reposync --repoid the_repo``
     Synchronize all packages from the repository with id ``the_repo``. The
     synchronized copy is saved in ``the_repo`` subdirectory of the current
     working directory.
 
-``dnf reposync --destdir=/my/repos/path --repoid=the_repo``
+``dnf reposync --destdir /my/repos/path --repoid the_repo``
     Synchronize all packages from the repository with id ``the_repo``. In this
     case files are saved in ``/my/repos/path/the_repo`` directory.
 
-``dnf reposync --repoid=the_repo --download-metadata``
+``dnf reposync --repoid the_repo --download-metadata``
     Synchronize all packages and metadata from ``the_repo`` repository.
 
     Repository synchronized with ``--download-metadata`` option can be directly
     used with DNF for example by using ``--repofrompath`` option:
 
-    ``dnf --repofrompath=syncedrepo,the_repo --repoid=syncedrepo list --available``
+    ``dnf --repofrompath syncedrepo,the_repo --repoid syncedrepo list --available``

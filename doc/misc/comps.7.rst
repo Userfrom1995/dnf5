@@ -46,7 +46,7 @@ In the `group`, there are four levels of packages:
 
 `default`
     | These are packages installed together with mandatory packages.
-    | They can be excluded, f.e. using the ``--exclude=PACKAGE-SPEC-N,...`` argument.
+    | They can be excluded, f.e. using the ``--exclude PACKAGE-SPEC-N,...`` argument.
 
 `optional`
     | These packages are not installed by default.

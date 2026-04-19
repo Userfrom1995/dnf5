@@ -115,17 +115,17 @@ Options
 Examples
 ========
 
-``dnf5 do --action=install tito``
+``dnf5 do --action install tito``
     Install the ``tito`` package.
 
-``dnf5 do --action=remove sddm-wayland-plasma --action=install sddm-x11``
+``dnf5 do --action remove sddm-wayland-plasma --action install sddm-x11``
     Replace package ``sddm-wayland-plasma`` with ``sddm-x11``.
 
-``dnf5 do --action=install --type=group id=office 'name=Games and Entertainment' --type=package iftop --action=remove atop``
+``dnf5 do --action install --type group id=office 'name=Games and Entertainment' --type package iftop --action remove atop``
     Install the ``office`` group (by ID), the ``Games and Entertainment`` group (by name), and the ``iftop`` package,
     and remove the ``atop`` package.
 
-``dnf5 do --action=install pkg --from-repo=myrepo1 pkg1 --from-repo=myrepo2 pkg2 --action=remove --installed-from-repo=compromised_repo '*'``
+``dnf5 do --action install pkg --from-repo myrepo1 pkg1 --from-repo myrepo2 pkg2 --action remove --installed-from-repo compromised_repo '*'``
     Install the ``pkg`` package from any enabled repository, as well as package ``pkg1`` from the ``myrepo1``
     repository and package ``pkg2`` from the ``myrepo2`` repository. Dependencies for these packages are installed
     from any enabled repository. Additionally, remove all packages installed from the ``compromised_repo``.

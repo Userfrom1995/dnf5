@@ -45,7 +45,7 @@ Options
 
 .. include:: ../_shared/options/advisory-severities.rst
 
-``--arch=ARCH,...``
+``--arch ARCH,...``
     | Limit to packages of these architectures.
     | This is a list option.
 
@@ -76,7 +76,7 @@ Options
 ``--extras``
     | Limit to installed packages that are not present in any available repository.
 
-``-f, --file=FILE,...``
+``-f, --file FILE,...``
     | Limit to packages that own these files.
     | This is a list option.
 
@@ -89,7 +89,7 @@ Options
 ``--installonly``
     | Limit to installed installonly packages.
 
-``--latest-limit=N``
+``--latest-limit N``
     | Limit to N latest packages for a given name.arch (or all except N latest if N is negative).
 
 ``--leaves``
@@ -97,7 +97,7 @@ Options
 
 .. include:: ../_shared/options/newpackage.rst
 
-``--providers-of=PACKAGE_ATTRIBUTE``
+``--providers-of PACKAGE_ATTRIBUTE``
     | After filtering is finished get selected attribute of packages and output packages that provide it.
     | The outputted packages are limited by ``--available``, ``--installed`` and ``--arch`` options.
     | Supports: conflicts, depends, enhances, obsoletes, provides, recommends, requires, requires_pre, suggests, supplements.
@@ -106,9 +106,9 @@ Options
     | Limit to only recently changed packages.
 
 ``--recursive``
-    | This option is stackable with --whatrequires or --providers-of=requires only.
+    | This option is stackable with --whatrequires or --providers-of requires only.
     | When used with --whatrequires: it extends the output with packages that require anything provided by outputted packages.
-    | When used with --providers-of=requires: it extends the output with packages that provide anything required by outputted packages.
+    | When used with --providers-of requires: it extends the output with packages that provide anything required by outputted packages.
     | It repeats the output extension as long as new packages are being added.
     | The added packages are limited by ``--available``, ``--installed`` and ``--arch`` options.
 
@@ -131,39 +131,39 @@ Options
     | The result may be influenced by the "exclude" option in the configuration file.
     | To get an exact reason of the installation, use ``--queryformat '%{name} %{reason}\n'`` option.
 
-``--whatconflicts=CAPABILITY,...``
+``--whatconflicts CAPABILITY,...``
     | Limit to packages that conflict with any of <capabilities>.
     | This is a list option.
 
-``--whatdepends=CAPABILITY,...``
+``--whatdepends CAPABILITY,...``
     | Limit to packages that require, enhance, recommend, suggest or supplement any of <capabilities>.
     | This is a list option.
 
-``--whatenhances=CAPABILITY,...``
+``--whatenhances CAPABILITY,...``
     | Limit to packages that enhance any of <capabilities>. Use --whatdepends if you want to list all depending packages.
     | This is a list option.
 
-``--whatobsoletes=CAPABILITY,...``
+``--whatobsoletes CAPABILITY,...``
     | Limit to packages that obsolete any of <capabilities>.
     | This is a list option.
 
-``--whatprovides=CAPABILITY,...``
+``--whatprovides CAPABILITY,...``
     | Limit to packages that provide any of <capabilities>. Capabilities :ref:`specifying a file provide <file_provides_ref-label>` are also matched against file provides.
     | This is a list option.
 
-``--whatrecommends=CAPABILITY,...``
+``--whatrecommends CAPABILITY,...``
     | Limit to packages that recommend any of <capabilities>. Use --whatdepends if you want to list all depending packages.
     | This is a list option.
 
-``--whatrequires=CAPABILITY,...``
+``--whatrequires CAPABILITY,...``
     | Limit to packages that require any of <capabilities>. Use --whatdepends if you want to list all depending packages.
     | This is a list option.
 
-``--whatsuggests=CAPABILITY,...``
+``--whatsuggests CAPABILITY,...``
     | Limit to packages that suggest any of <capabilities>. Use --whatdepends if you want to list all depending packages.
     | This is a list option.
 
-``--whatsupplements=CAPABILITY,...``
+``--whatsupplements CAPABILITY,...``
     | Limit to packages that supplement any of <capabilities>. Use --whatdepends if you want to list all depending packages.
     | This is a list option.
 
@@ -220,7 +220,7 @@ Set what information is displayed about each package. The following are mutually
 ``--querytags``
     | Display available tags for --queryformat.
 
-``--queryformat=<format>``
+``--queryformat <format>``
     | Display format for packages. The ``<format>`` string can contain tags (``%{<tag>}``) which are replaced with corresponding attributes of the package.
     | Default is ``"%{full_nevra}"``. The ``<format>`` string is expanded and deduplicated for each package.
     |

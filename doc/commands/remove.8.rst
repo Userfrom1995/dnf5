@@ -29,7 +29,7 @@ Synopsis
 
 ``dnf5 remove [options] <package-spec-NF>|@<group-spec>|@<environment-spec>...``
 
-``dnf5 remove --oldinstallonly [--limit=<LIMIT>] [<package-spec-NF>...]``
+``dnf5 remove --oldinstallonly [--limit <LIMIT>] [<package-spec-NF>...]``
 
 
 Description
@@ -60,7 +60,7 @@ Options
     | When used without package specs, all installonly package types are considered.
     | The currently running kernel is automatically skipped.
 
-``--limit=<LIMIT>``
+``--limit <LIMIT>``
     | Override the ``installonly_limit`` configuration value. Must be greater than or equal to 1
       to keep at least the newest installed version. Can only be used with ``--oldinstallonly``.
 
@@ -79,7 +79,7 @@ Examples
 ``dnf5 remove --oldinstallonly kernel``
     | Remove old kernel packages exceeding the configured ``installonly_limit``.
 
-``dnf5 remove --oldinstallonly --limit=2``
+``dnf5 remove --oldinstallonly --limit 2``
     | Remove old installonly packages, keeping only the 2 newest versions of each.
 
 

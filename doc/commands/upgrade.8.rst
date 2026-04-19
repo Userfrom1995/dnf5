@@ -62,7 +62,7 @@ Options
 ``--no-allow-downgrade``
     | Disable downgrade of dependencies when resolving the requested operation.
 
-``--destdir=<path>``
+``--destdir <path>``
     | Set directory used for downloading packages to. Default location is to the current working directory.
     | Automatically sets the ``downloadonly`` option.
 

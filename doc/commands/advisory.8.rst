@@ -79,7 +79,7 @@ Options
 ``--updates``
     | Show advisories containing newer versions of installed packages for which a newer version is available.
 
-``--contains-pkgs=PACKAGE_NAME,...``
+``--contains-pkgs PACKAGE_NAME,...``
     | Show only advisories containing packages with specified names.
     | This is a list option.
     | Only installed packages are matched. Globs are supported.
@@ -115,10 +115,10 @@ Examples
 ``dnf5 advisory info FEDORA-2022-07aa56297a``
     | Show detailed info about advisory with given name.
 
-``dnf5 advisory summary --contains-pkgs=kernel,kernel-core --with-bz``
+``dnf5 advisory summary --contains-pkgs kernel,kernel-core --with-bz``
     | Show a summary of advisories containing ``kernel`` or ``kernel-core`` packages and referencing any Bugzilla ticket.
 
-``dnf5 advisory list --security --advisory-severities=important``
+``dnf5 advisory list --security --advisory-severities important``
     | Show a list of security advisories or advisories with ``important`` severity.
 
 ``dnf5 advisory list --json``
