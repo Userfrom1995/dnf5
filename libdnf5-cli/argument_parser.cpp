@@ -349,14 +349,15 @@ ArgumentParser::PositionalArg::PositionalArg(
     libdnf_assert(!values || init_value, "\"init_value\" constructor parameter cannot be nullptr if \"value\" is set");
 }
 
-int ArgumentParser::PositionalArg::parse(const char * option, int argc, const char * const argv[]) {
+int ArgumentParser::PositionalArg::parse(
+    const char * option, int argc, const char * const argv[], bool stop_at_named_args) {
     if (const auto * arg = get_conflict_argument()) {
         auto [fmt_message, conflict_option] = get_conflict_arg_msg(arg);
         throw ArgumentParserConflictingArgumentsError(fmt_message, std::string(option), conflict_option);
     }
     if (owner.p_impl->complete_arg_ptr) {
         int usable_argc = 1;
-        while (usable_argc < argc && *argv[usable_argc] != '-') {
+        while (usable_argc < argc && (!stop_at_named_args || *argv[usable_argc] != '-')) {
             ++usable_argc;
         }
         auto count = static_cast<size_t>(nvals > 0 ? nvals : (nvals == OPTIONAL ? 1 : usable_argc));
@@ -382,14 +383,14 @@ int ArgumentParser::PositionalArg::parse(const char * option, int argc, const ch
         throw ArgumentParserPositionalArgFewValuesError(M_("Too few values for positional argument \"{}\""), this->id);
     }
     for (int i = 1; i < nvals; ++i) {
-        if (*argv[i] == '-') {
+        if (stop_at_named_args && *argv[i] == '-') {
             throw ArgumentParserPositionalArgFewValuesError(
                 M_("Too few values for positional argument \"{}\""), this->id);
         }
     }
     int usable_argc = 1;
     if (nvals <= 0) {
-        while (usable_argc < argc && *argv[usable_argc] != '-') {
+        while (usable_argc < argc && (!stop_at_named_args || *argv[usable_argc] != '-')) {
             ++usable_argc;
         }
     }
@@ -1078,12 +1079,20 @@ void ArgumentParser::CommandOrdinary::parse(const char * option, int argc, const
     }
     size_t used_positional_arguments = 0;
     int short_option_idx = 0;
+    bool stop_at_named_args = true;
     for (int i = 1; i < argc;) {
+        if (stop_at_named_args && std::strcmp(argv[i], "--") == 0 &&
+            (!owner.p_impl->complete_arg_ptr || argv + i != owner.p_impl->complete_arg_ptr)) {
+            stop_at_named_args = false;
+            ++i;
+            short_option_idx = 0;
+            continue;
+        }
         char unused_short_option = 0;
         if (owner.p_impl->complete_arg_ptr) {
             if (argv + i > owner.p_impl->complete_arg_ptr) {
                 return;
-            } else if (argv + i == owner.p_impl->complete_arg_ptr) {
+            } else if (argv + i == owner.p_impl->complete_arg_ptr && stop_at_named_args) {
                 print_complete(
                     argv[i],
                     inherit_named_args_from_parent ? extended_named_args : named_args,
@@ -1093,7 +1102,7 @@ void ArgumentParser::CommandOrdinary::parse(const char * option, int argc, const
         }
         bool used = false;
         const auto * tmp = argv[i];
-        if (*tmp == '-') {
+        if (stop_at_named_args && *tmp == '-') {
             bool long_option = *++tmp == '-';
             if (long_option) {
                 ++tmp;
@@ -1127,7 +1136,7 @@ void ArgumentParser::CommandOrdinary::parse(const char * option, int argc, const
                 unused_short_option = tmp[short_option_idx];
             }
         }
-        if (!used) {
+        if (!used && stop_at_named_args) {
             for (auto & cmd : cmds) {
                 if (cmd->id == argv[i]) {
                     if (const auto * arg = get_conflict_argument()) {
@@ -1148,9 +1157,9 @@ void ArgumentParser::CommandOrdinary::parse(const char * option, int argc, const
                 }
             }
         }
-        if (!used && *argv[i] != '-' && used_positional_arguments < pos_args.size()) {
+        if (!used && (!stop_at_named_args || *argv[i] != '-') && used_positional_arguments < pos_args.size()) {
             auto * pos_arg = pos_args[used_positional_arguments];
-            i += pos_arg->parse(argv[i], argc - i, &argv[i]);
+            i += pos_arg->parse(argv[i], argc - i, &argv[i], stop_at_named_args);
             auto nrepeats = pos_arg->get_nrepeats();
             if ((nrepeats > 0 && pos_arg->parse_count >= nrepeats) || nrepeats == PositionalArg::OPTIONAL) {
                 ++used_positional_arguments;
@@ -1300,11 +1309,19 @@ void ArgumentParser::CommandAlias::parse(const char * option, int argc, const ch
     }
     size_t used_positional_arguments = 0;
     int short_option_idx = 0;
+    bool stop_at_named_args = true;
     for (int i = 1 + number_of_required_values; i < argc;) {
+        if (stop_at_named_args && std::strcmp(argv[i], "--") == 0 &&
+            (!owner.p_impl->complete_arg_ptr || argv + i != owner.p_impl->complete_arg_ptr)) {
+            stop_at_named_args = false;
+            ++i;
+            short_option_idx = 0;
+            continue;
+        }
         if (owner.p_impl->complete_arg_ptr) {
             if (argv + i > owner.p_impl->complete_arg_ptr) {
                 return;
-            } else if (argv + i == owner.p_impl->complete_arg_ptr) {
+            } else if (argv + i == owner.p_impl->complete_arg_ptr && stop_at_named_args) {
                 print_complete(
                     argv[i],
                     inherit_named_args_from_parent ? extended_named_args : named_args,
@@ -1314,7 +1331,7 @@ void ArgumentParser::CommandAlias::parse(const char * option, int argc, const ch
         }
         bool used = false;
         const auto * tmp = argv[i];
-        if (*tmp == '-') {
+        if (stop_at_named_args && *tmp == '-') {
             bool long_option = *++tmp == '-';
             if (long_option) {
                 ++tmp;
@@ -1345,7 +1362,7 @@ void ArgumentParser::CommandAlias::parse(const char * option, int argc, const ch
                 }
             }
         }
-        if (!used) {
+        if (!used && stop_at_named_args) {
             for (auto & cmd : cmds) {
                 if (cmd->id == argv[i]) {
                     if (const auto * arg = get_conflict_argument()) {
@@ -1366,9 +1383,9 @@ void ArgumentParser::CommandAlias::parse(const char * option, int argc, const ch
                 }
             }
         }
-        if (!used && *argv[i] != '-' && used_positional_arguments < pos_args.size()) {
+        if (!used && (!stop_at_named_args || *argv[i] != '-') && used_positional_arguments < pos_args.size()) {
             auto * pos_arg = pos_args[used_positional_arguments];
-            i += pos_arg->parse(argv[i], argc - i, &argv[i]);
+            i += pos_arg->parse(argv[i], argc - i, &argv[i], stop_at_named_args);
             auto nrepeats = pos_arg->get_nrepeats();
             if ((nrepeats > 0 && pos_arg->parse_count >= nrepeats) || nrepeats == PositionalArg::OPTIONAL) {
                 ++used_positional_arguments;

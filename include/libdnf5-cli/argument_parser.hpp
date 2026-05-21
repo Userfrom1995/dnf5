@@ -224,7 +224,8 @@ public:
 
         /// Parses input.
         /// Returns number of consumed arguments from the input.
-        LIBDNF_CLI_LOCAL int parse(const char * option, int argc, const char * const argv[]);
+        LIBDNF_CLI_LOCAL int parse(
+            const char * option, int argc, const char * const argv[], bool stop_at_named_args = true);
 
         int nvals;  // Number of values required by this positional argument on the command line
         libdnf5::Option * init_value;
