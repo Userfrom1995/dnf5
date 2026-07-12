@@ -9,7 +9,7 @@ jobs:
   pot-upload:
     name: Upload *.pot files to dnf5-l10n repository
     # do not run the cron job on forks
-    if: (github.event_name == 'schedule' && github.repository_owner == 'rpm-software-management') || (github.event_name != 'schedule')
+    if: (github.event_name == 'schedule' && github.repository_owner == 'Userfrom1995') || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/rpm-software-management/dnf-ci-host
@@ -22,7 +22,7 @@ jobs:
           app-id: ${{ vars.RSM_CI_APP_ID }}
           private-key: ${{ secrets.RSM_CI_APP_PRIVATE_KEY }}
           permission-contents: "write"
-          repositories: "rpm-software-management/dnf5-l10n"
+          repositories: "Userfrom1995/dnf5-l10n"
 
       - name: Clone source repository
         uses: actions/checkout@v6
