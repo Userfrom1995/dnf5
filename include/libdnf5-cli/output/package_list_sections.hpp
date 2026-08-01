@@ -58,6 +58,11 @@ public:
         const libdnf5::rpm::PackageSet & pkg_set,
         const std::map<libdnf5::rpm::PackageId, std::vector<libdnf5::rpm::Package>> & obsoletes = {});
 
+    /// Sets the installed packages used to display version transitions (e.g. "1.0 -> 2.0")
+    /// in both CLI table and JSON output.
+    /// @param installed Set of currently installed packages
+    void set_installed_packages(const libdnf5::rpm::PackageSet & installed);
+
 protected:
     class LIBDNF_CLI_LOCAL Impl;
     std::unique_ptr<Impl> p_impl;

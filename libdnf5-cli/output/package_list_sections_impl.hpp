@@ -23,6 +23,8 @@
 
 #include "libdnf5-cli/output/package_list_sections.hpp"
 
+#include <unordered_map>
+
 
 namespace libdnf5::cli::output {
 
@@ -33,6 +35,9 @@ public:
         libdnf5::rpm::PackageSet,
         std::map<libdnf5::rpm::PackageId, std::vector<libdnf5::rpm::Package>>>>
         sections;
+
+    // map of name.arch -> installed EVR, populated by set_installed_packages()
+    std::unordered_map<std::string, std::string> installed_versions;
 };
 
 }  // namespace libdnf5::cli::output

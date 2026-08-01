@@ -91,7 +91,13 @@ void PackageListSections::print(const std::unique_ptr<PkgColorizer> & colorizer)
                 scols_line_set_color(ln, colorizer->get_pkg_color(PackageAdapter(pkg)).c_str());
             }
             scols_line_set_data(ln, COL_NA, pkg.get_na().c_str());
-            scols_line_set_data(ln, COL_EVR, pkg.get_evr().c_str());
+            std::string evr_display = pkg.get_evr();
+            auto installed_it = p_impl->installed_versions.find(pkg.get_na());
+            if (installed_it != p_impl->installed_versions.end() &&
+                installed_it->second != pkg.get_evr()) {
+                evr_display = installed_it->second + " -> " + pkg.get_evr();
+            }
+            scols_line_set_data(ln, COL_EVR, evr_display.c_str());
             if (pkg.is_installed()) {
                 scols_line_set_data(ln, COL_REPO, pkg.get_from_repo_id().c_str());
             } else {
@@ -154,6 +160,14 @@ void PackageListSections::print_json() {
         for (auto && pkg : pkg_set.to_sorted_vector()) {
             json_object * j_pkg = package_to_json(pkg);
 
+            // add installed version if available and different from the available version
+            auto installed_it = p_impl->installed_versions.find(pkg.get_na());
+            if (installed_it != p_impl->installed_versions.end() &&
+                installed_it->second != pkg.get_evr()) {
+                json_object_object_add(
+                    j_pkg, "installed_evr", json_object_new_string(installed_it->second.c_str()));
+            }
+
             // add obsoleted packages
             auto obsoletes_it = obsoletes.find(pkg.get_id());
             if (obsoletes_it != obsoletes.end() && !obsoletes_it->second.empty()) {
@@ -186,6 +200,13 @@ bool PackageListSections::add_section(
         return true;
     } else {
         return false;
+    }
+}
+
+
+void PackageListSections::set_installed_packages(const libdnf5::rpm::PackageSet & installed) {
+    for (const auto & pkg : installed) {
+        p_impl->installed_versions.emplace(pkg.get_na(), pkg.get_evr());
     }
 }
 

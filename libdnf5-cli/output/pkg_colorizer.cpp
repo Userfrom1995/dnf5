@@ -87,6 +87,15 @@ std::string PkgColorizer::get_pkg_color(const IPackage & package) {
 }
 
 
+std::string PkgColorizer::get_installed_evr(const IPackage & package) {
+    auto base_pkg = base_na_version.find(package.get_na());
+    if (base_pkg != base_na_version.end()) {
+        return base_pkg->second.get_evr();
+    }
+    return "";
+}
+
+
 std::string PkgColorizer::to_escape(const std::string & color) {
     if (color.empty()) {
         return "";

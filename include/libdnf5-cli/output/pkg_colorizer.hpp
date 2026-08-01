@@ -59,6 +59,11 @@ public:
     /// @return Description string, already escaped.
     std::string get_coloring_description();
 
+    /// Get the installed EVR for a package by looking up its name.arch in the base versions.
+    /// @param package The package to look up.
+    /// @return The installed EVR string, or empty string if not found in base versions.
+    std::string get_installed_evr(const IPackage & package);
+
 private:
     LIBDNF_CLI_LOCAL std::string to_escape(const std::string & color);
 

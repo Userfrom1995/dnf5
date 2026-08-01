@@ -211,6 +211,9 @@ void CheckUpgradeCommand::run() {
     package_matched |= sections->add_section("Upgrades", upgrades_query);
     package_matched |= sections->add_section("Obsoleting packages", obsoletes_query, obsoletes);
 
+    // Provide installed package versions for display in both CLI and JSON output
+    sections->set_installed_packages(installed_query);
+
     if (ctx.get_json_output_requested()) {
         sections->print_json();
         return;
