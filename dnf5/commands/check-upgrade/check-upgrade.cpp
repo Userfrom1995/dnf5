@@ -27,6 +27,7 @@
 #include <libdnf5/rpm/package_query.hpp>
 #include <libdnf5/utils/bgettext/bgettext-mark-domain.h>
 
+#include <cassert>
 #include <iostream>
 #include <map>
 #include <string>
@@ -253,6 +254,7 @@ void CheckUpgradeCommand::run() {
                         }
                     }
                 }
+                assert(best_pkg != nullptr);
                 if (best_pkg != nullptr) {
                     upgrades.emplace(cand.get_id(), *best_pkg);
                 }
